@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV.fetch("DATABASE_HOST", "db") %>
+  port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  user: <%= ENV.fetch("DATABASE_USER", "payment_process") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "payment_process") %>
+
+
+development:
+  <<: *default
+  database: payment_processing_system_development
+
+test:
+  <<: *default
+  database: payment_processing_system_test
+
+production:
+  <<: *default
+  database: payment_processing_system_production
+  username: payment_processing_system
+  password: <%= ENV["PAYMENT_PROCESSING_SYSTEM_DATABASE_PASSWORD"] %>
