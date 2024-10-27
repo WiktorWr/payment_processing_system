@@ -20,8 +20,8 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: payment_processing_system
-          POSTGRES_PASSWORD: payment_processing_system
+          DATABASE_USER: payment_processing_system
+          DATABASE_PASSWORD: payment_processing_system
         options: >-
           --health-cmd="pg_isready -U payment_processing_system"
           --health-interval=10s

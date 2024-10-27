@@ -4,8 +4,8 @@ default: &default
   host: <%= ENV.fetch("DATABASE_HOST", "db") %>
   port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  user: <%= ENV.fetch("DATABASE_USER", "payment_process") %>
-  password: <%= ENV.fetch("DATABASE_PASSWORD", "payment_process") %>
+  user: <%= ENV.fetch("DATABASE_USER", "payment_processing_system") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "payment_processing_system") %>
 
 
 development:
