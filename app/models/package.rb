@@ -24,6 +24,8 @@ class Package < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :price, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
+  after_validation :set_stripe_data
+
   PACKAGE_INTERVALS = {
     day:   "day",
     week:  "week",
@@ -38,4 +40,20 @@ class Package < ApplicationRecord
 
   enum :package_interval,       PACKAGE_INTERVALS
   enum :package_price_currency, PACKAGE_PRICE_CURRENCIES
+
+  private
+
+  def set_stripe_data
+    product = Stripe::Product.create(name: name)
+    stripe_price = Stripe::Price.create(
+      product:     product.id,
+      unit_amount: price,
+      currency:    package_price_currency,
+      recurring:   { interval: package_interval }
+    )
+    self.stripe_product_id = product.id
+    self.stripe_price_id = stripe_price.id
+  rescue Stripe::StripeError => e
+    errors.add(:base, "Stripe API error: #{e.message}")
+  end
 end
