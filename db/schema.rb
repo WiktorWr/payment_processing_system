@@ -10,9 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 0) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_27_145540) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "package_interval", ["day", "week", "month", "year"]
+  create_enum "package_price_currency", ["PLN", "USD"]
+
+  create_table "packages", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "price", null: false
+    t.enum "package_interval", default: "month", null: false, enum_type: "package_interval"
+    t.enum "package_price_currency", default: "USD", null: false, enum_type: "package_price_currency"
+    t.string "stripe_product_id", null: false
+    t.string "stripe_price_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_packages_on_name", unique: true
+    t.index ["stripe_price_id"], name: "index_packages_on_stripe_price_id", unique: true
+    t.index ["stripe_product_id"], name: "index_packages_on_stripe_product_id", unique: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false

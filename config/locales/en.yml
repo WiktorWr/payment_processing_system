@@ -4,3 +4,5 @@ en:
       blank: "can't be blank"
       taken: "has already been taken"
       invalid: "is invalid"
+      greater_than: "must be greater than %{count}"
+      not_an_integer: "must be an integer"
